@@ -1,1 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXORA STORE | Boutique officielle</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
+header{background:#101b32;color:white;padding:20px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
+.logo{font-size:25px;font-weight:900;letter-spacing:2px}
+.logo span{color:#40d9c1}
+header a{color:white;text-decoration:none;margin-left:18px}
+.hero{padding:65px 7%;background:linear-gradient(120deg,#101b32,#164c67);color:white}
+.hero h1{font-size:clamp(32px,5vw,52px);max-width:600px;margin-bottom:15px}
+.hero p{color:#d5e5ef;line-height:1.7;margin-bottom:25px}
+.btn{display:inline-block;background:#40d9c1;color:#102139;padding:13px 22px;border:0;border-radius:8px;font-weight:bold;text-decoration:none;cursor:pointer}
+section{padding:45px 7%}
+.section-title{font-size:27px;margin-bottom:20px}
+.search{width:100%;padding:14px;border:1px solid #dce2ea;border-radius:9px;margin-bottom:25px;font-size:16px}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
+.product{background:white;border-radius:13px;padding:20px;box-shadow:0 5px 20px #14213b0c}
+.product-image{height:145px;background:#eaf5f5;border-radius:10px;display:grid;place-items:center;font-size:65px;margin-bottom:15px}
+.product h3{margin-bottom:9px}
+.product p{color:#697487;font-size:14px;line-height:1.5;margin-bottom:13px}
+.price{font-weight:bold;color:#087d71;margin-bottom:15px}
+.product button{width:100%}
+.cart{background:white;border-radius:13px;padding:22px;margin-top:20px}
+.cart-item{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid #eee}
+.cart button{margin-top:10px}
+footer{background:#101b32;color:white;text-align:center;padding:30px 15px;line-height:2}
+footer p{color:#b9c9d8}
+</style>
+</head>
+<body>
 
+<header>
+  <div class="logo">NEXORA <span>STORE</span></div>
+  <nav>
+    <a href="#home">Accueil</a>
+    <a href="#products">Produits</a>
+    <a href="#cart">Panier (<span id="count">0</span>)</a>
+  </nav>
+</header>
+
+<div class="hero" id="home">
+  <h1>La technologie à portée de main.</h1>
+  <p>Découvrez notre sélection de téléphones et accessoires technologiques. Bienvenue chez NEXORA STORE.</p>
+  <a class="btn" href="#products">Découvrir nos produits</a>
+</div>
+
+<section id="products">
+  <h2 class="section-title">Nos produits</h2>
+  <input class="search" id="search" placeholder="Rechercher un produit...">
+
+  <div class="products" id="productList"></div>
+</section>
+
+<section id="cart">
+  <h2 class="section-title">Votre panier</h2>
+  <div class="cart">
+    <div id="cartItems">Votre panier est vide.</div>
+    <h3 id="total" style="margin-top:18px">Total : 0</h3>
+    <button class="btn" onclick="checkout()">Commander sur WhatsApp</button>
+  </div>
+</section>
+
+<footer>
+  <h2>NEXORA STORE</h2>
+  <p>Votre destination technologique.</p>
+  <p>© 2026 NEXORA STORE. Tous droits réservés.</p>
+</footer>
+
+<script>
+const products = [
+ {name:"Smartphone",icon:"📱",description:"Découvrez notre sélection de smartphones.",price:0},
+ {name:"Écouteurs sans fil",icon:"🎧",description:"Écoutez votre musique partout.",price:0},
+ {name:"Montre connectée",icon:"⌚",description:"Un accessoire intelligent au quotidien.",price:0},
+ {name:"Chargeur rapide",icon:"🔌",description:"Rechargez vos appareils facilement.",price:0},
+ {name:"Coque de téléphone",icon:"📲",description:"Protégez votre téléphone avec style.",price:0},
+ {name:"Power bank",icon:"🔋",description:"Gardez vos appareils chargés.",price:0}
+];
+
+let cart=[];
+
+function displayProducts(list){
+ const container=document.getElementById("productList");
+ container.innerHTML="";
+ list.forEach((p)=>{
+  const index=products.indexOf(p);
+  container.innerHTML+=`
+   <div class="product">
+    <div class="product-image">${p.icon}</div>
+    <h3>${p.name}</h3>
+    <p>${p.description}</p>
+    <div class="price">Prix : sur demande</div>
+    <button class="btn" onclick="addToCart(${index})">Ajouter au panier</button>
+   </div>`;
+ });
+}
+
+function addToCart(index){
+ cart.push(products[index]);
+ updateCart();
+}
+
+function updateCart(){
+ document.getElementById("count").textContent=cart.length;
+ const area=document.getElementById("cartItems");
+ if(cart.length===0){
+  area.textContent="Votre panier est vide.";
+ }else{
+  area.innerHTML="";
+  cart.forEach((p,i)=>{
+   area.innerHTML+=`
+    <div class="cart-item">
+     <span>${p.icon} ${p.name}</span>
+     <button onclick="removeItem(${i})">Retirer</button>
+    </div>`;
+  });
+ }
+ document.getElementById("total").textContent="Total : à confirmer avec le vendeur";
+}
+
+function removeItem(index){
+ cart.splice(index,1);
+ updateCart();
+}
+
+document.getElementById("search").addEventListener("input",function(){
+ const term=this.value.toLowerCase();
+ displayProducts(products.filter(p=>p.name.toLowerCase().includes(term)));
+});
+
+function checkout(){
+ if(cart.length===0){
+  alert("Votre panier est vide !");
+  return;
+ }
+ const message="Bonjour NEXORA STORE ! Je souhaite commander :\n"+
+ cart.map(p=>"- "+p.name).join("\n")+
+ "\nMerci de me confirmer les prix et la livraison.";
+ const phone="509XXXXXXXX";
+ window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(message),"_blank");
+}
+
+displayProducts(products);
+</script>
+</body>
+</html>
