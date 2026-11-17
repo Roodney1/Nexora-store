@@ -59,12 +59,10 @@ with check ((auth.jwt() -> 'app_metadata' ->> 'role') = 'admin');
 
 -- Données d'exemple : modifiez les prix, stocks et photos depuis l'administration.
 insert into public.products (name,category,description,price,stock,image) values
-('Smartphone Android','Téléphones','Smartphone moderne pour vos activités quotidiennes.',129,12,'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=700'),
-('Ordinateur portable','Informatique','Ordinateur pour les études et le travail.',399,4,'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=700'),
-('Écouteurs sans fil','Audio','Écouteurs Bluetooth compacts.',24,20,'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700'),
-('Montre connectée','Accessoires','Suivez vos activités avec une montre connectée.',32,14,'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700'),
-('Chargeur rapide','Accessoires','Chargeur mural pour appareils compatibles.',14,30,'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=700'),
-('Sac à dos','Mode','Sac polyvalent pour école, travail et sorties.',28,11,'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700'),
-('Lampe de bureau','Maison','Éclairage pratique pour votre espace de travail.',19,8,'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=700'),
-('Manette de jeu','Gaming','Manette pour vos sessions de jeu.',29,6,'https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=700')
+('Pack de modèles CV professionnels','CV et emploi','Modèles de CV modernes à personnaliser pour vos candidatures.',250,999,''),
+('Kit de démarrage pour petit business','Business','Checklist et outils pour organiser une petite activité.',400,999,''),
+('Pack de flyers modifiables','Design et réseaux sociaux','Modèles de publications et flyers pour promouvoir une activité.',350,999,''),
+('Guide pratique pour réussir un entretien','Guides pratiques','Conseils et exemples pour préparer un entretien d embauche.',200,999,''),
+('Pack fiches de révision','Éducation','Fiches structurées pour organiser ses révisions.',150,999,''),
+('Modèles de factures et devis','Business','Documents simples pour gérer les ventes et prestations.',300,999,'')
 on conflict do nothing;
