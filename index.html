@@ -1,168 +1,70 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXORA STORE | Boutique en ligne</title>
-<meta name="description" content="Découvrez les produits NEXORA STORE : technologie, maison, mode et accessoires.">
+<!doctype html>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEXORA STORE</title><meta name="description" content="La boutique NEXORA STORE">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--navy:#101b32;--teal:#40d9c1;--muted:#667085;--bg:#f4f7fb}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:var(--bg);color:#172033}
-header{background:var(--navy);color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
-.logo{font-size:24px;font-weight:900;letter-spacing:1.5px}.logo span{color:var(--teal)}
-nav{display:flex;gap:16px;flex-wrap:wrap;align-items:center}nav a{color:white;text-decoration:none;font-size:14px}
-button,.btn{background:var(--teal);color:#102139;padding:12px 17px;border:0;border-radius:8px;font-weight:bold;text-decoration:none;cursor:pointer}
-button:hover,.btn:hover{filter:brightness(.95)}
-.admin-link{background:#243550;color:white;border:1px solid #53627b}
-.hero{padding:70px 7%;background:linear-gradient(120deg,#101b32,#164c67);color:white}
-.hero h1{font-size:clamp(32px,5vw,54px);max-width:700px;margin-bottom:16px}
-.hero p{color:#d5e5ef;line-height:1.8;margin-bottom:24px;max-width:620px}
-section{padding:42px 7%}.section-title{font-size:27px;margin-bottom:20px}
-.toolbar{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:22px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #d8e0ea;border-radius:8px;font:inherit;background:white}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:18px}
-.product{background:white;border-radius:13px;padding:14px;box-shadow:0 5px 20px #14213b0c;display:flex;flex-direction:column}
-.product-image{height:165px;background:#edf4f5;border-radius:10px;overflow:hidden;margin-bottom:13px}
-.product-image img{width:100%;height:100%;object-fit:contain}
-.product h3{font-size:17px;margin-bottom:8px}.product p{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:10px;flex:1}
-.category{font-size:11px;color:#087d71;font-weight:bold;text-transform:uppercase;margin-bottom:7px}
-.price{font-size:19px;font-weight:bold;color:#087d71;margin:5px 0 13px}
-.cart,.admin-panel{background:white;border-radius:13px;padding:22px;box-shadow:0 5px 20px #14213b0c}
-.cart-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eee}
-.remove{background:#ffe8e8;color:#a22;padding:8px 11px}
-.cart-total{font-size:21px;font-weight:bold;margin:18px 0}
-.empty{text-align:center;color:#777;padding:20px}
-#admin{display:none;background:#eaf0f6}
-.admin-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:20px}
-.admin-form{display:grid;gap:10px}.admin-products{display:grid;gap:10px}
-.admin-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border:1px solid #e4e9ef;border-radius:9px}
-.admin-actions{display:flex;gap:7px;flex-wrap:wrap}.edit{background:#e8f0ff;color:#244b91}.delete{background:#ffe8e8;color:#a22}
-.notice{background:#fff6db;border:1px solid #f0d98e;padding:12px;border-radius:8px;color:#725510;font-size:13px;line-height:1.5;margin-bottom:16px}
-footer{background:var(--navy);color:white;text-align:center;padding:32px 15px;line-height:2}footer p{color:#b9c9d8}
-@media(max-width:700px){header{padding:15px 5%}.hero{padding:52px 5%}section{padding:32px 5%}.toolbar,.admin-grid{grid-template-columns:1fr}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.product{padding:10px}.product-image{height:120px}.product h3{font-size:14px}.product p{font-size:12px}.price{font-size:16px}.admin-row{align-items:flex-start;flex-direction:column}}
-</style>
-</head>
-<body>
-<header>
- <div class="logo">NEXORA <span>STORE</span></div>
- <nav>
-  <a href="#home">Accueil</a><a href="#products">Produits</a><a href="#cart">Panier (<span id="count">0</span>)</a>
-  <button class="admin-link" onclick="toggleAdmin()">Administration</button>
- </nav>
-</header>
-<div class="hero" id="home">
- <h1>Tous vos essentiels, au même endroit.</h1>
- <p>Découvrez notre sélection de technologie, accessoires, maison, mode et bien plus. Choisissez vos articles et commandez directement avec NEXORA STORE.</p>
- <a class="btn" href="#products">Voir les produits</a>
-</div>
-<section id="products">
- <h2 class="section-title">Notre catalogue</h2>
- <div class="toolbar">
-  <input id="search" placeholder="Rechercher un produit...">
-  <select id="categoryFilter"><option value="">Toutes les catégories</option></select>
- </div>
- <div class="products" id="productList"></div>
-</section>
-<section id="cart">
- <h2 class="section-title">Votre panier</h2>
- <div class="cart"><div id="cartItems" class="empty">Votre panier est vide.</div><div class="cart-total" id="total">Total : $0.00 USD</div><button onclick="checkout()">Commander sur WhatsApp</button></div>
-</section>
-<section id="admin">
- <h2 class="section-title">Administration — NEXORA STORE</h2>
- <div class="notice"><b>Version de démonstration :</b> les produits ajoutés ou modifiés sont enregistrés dans le navigateur utilisé. Ils ne sont pas encore synchronisés avec les visiteurs du site. Ne mettez pas de données sensibles ici. Une authentification serveur et une base de données seront nécessaires pour une administration publique sécurisée.</div>
- <div class="admin-grid">
-  <div class="admin-panel">
-   <h3 id="formTitle" style="margin-bottom:14px">Ajouter un produit</h3>
-   <form class="admin-form" id="productForm">
-    <input id="pName" placeholder="Nom du produit" required>
-    <textarea id="pDescription" placeholder="Description" rows="3" required></textarea>
-    <select id="pCategory" required>
-     <option value="Téléphones">Téléphones</option><option value="Informatique">Informatique</option><option value="Audio">Audio</option><option value="Accessoires">Accessoires</option><option value="Maison">Maison</option><option value="Mode">Mode</option><option value="Gaming">Gaming</option>
-    </select>
-    <input id="pPrice" type="number" min="0.01" step="0.01" placeholder="Prix en USD" required>
-    <input id="pImage" type="url" placeholder="Lien de l'image (URL https://)">
-    <input id="pStock" type="number" min="0" step="1" placeholder="Quantité en stock" value="10">
-    <button type="submit" id="saveProduct">Enregistrer le produit</button>
-    <button type="button" class="remove" onclick="resetForm()">Annuler</button>
-   </form>
-  </div>
-  <div class="admin-panel"><h3 style="margin-bottom:14px">Gérer les produits</h3><div id="adminProducts" class="admin-products"></div></div>
- </div>
-</section>
-<footer><h2>NEXORA STORE</h2><p>Votre destination shopping.</p><p>Contact et commandes : WhatsApp</p><p>© 2026 NEXORA STORE. Tous droits réservés.</p></footer>
+:root{--navy:#101b32;--teal:#40d9c1;--bg:#f4f7fb;--ink:#172033;--muted:#667085}*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--ink)}header{background:var(--navy);color:white;padding:16px 6%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;position:sticky;top:0;z-index:5}.logo{font-weight:900;font-size:23px;letter-spacing:1px}.logo span{color:var(--teal)}nav{display:flex;gap:15px;align-items:center;flex-wrap:wrap}nav a{color:white;text-decoration:none;font-size:14px}.btn,button{border:0;border-radius:8px;padding:11px 15px;background:var(--teal);color:#102139;font-weight:bold;cursor:pointer}.dark{background:#263955;color:white}.danger{background:#ffe6e6;color:#9b2222}.light{background:#e8efff;color:#244b91}button:disabled{opacity:.5;cursor:not-allowed}.hero{padding:70px 7%;background:linear-gradient(120deg,#101b32,#164c67);color:white}.hero h1{font-size:clamp(32px,5vw,54px);max-width:700px;margin:0 0 15px}.hero p{max-width:620px;line-height:1.7;color:#d5e5ef;margin-bottom:22px}section{padding:40px 7%}.heading{font-size:27px;margin:0 0 20px}.toolbar{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:20px}input,select,textarea{width:100%;padding:12px;border:1px solid #d8e0ea;border-radius:8px;background:white;font:inherit}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:17px}.product,.panel{background:white;border-radius:13px;padding:15px;box-shadow:0 5px 20px #14213b0c}.product{display:flex;flex-direction:column}.photo{height:160px;background:#edf4f5;border-radius:9px;overflow:hidden;margin-bottom:12px}.photo img{width:100%;height:100%;object-fit:contain}.category{font-size:11px;color:#087d71;text-transform:uppercase;font-weight:bold}.product h3{margin:8px 0}.product p{font-size:13px;color:var(--muted);line-height:1.5;flex:1}.price{font-size:19px;color:#087d71;font-weight:bold;margin:10px 0}.cart-row,.manage-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #e8edf2}.total{font-size:21px;font-weight:bold;margin:18px 0}.empty{padding:20px;text-align:center;color:#777}.admin{display:none;background:#eaf0f6}.admin-layout{display:grid;grid-template-columns:210px 1fr;gap:18px}.side{display:grid;align-content:start;gap:8px}.side button{text-align:left;background:white;color:#23334b}.side button.active{background:var(--navy);color:white}.tab{display:none}.tab.active{display:block}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.formgrid .wide{grid-column:1/-1}.stack{display:grid;gap:12px}.notice{padding:13px;background:#fff5d9;border:1px solid #ecd58a;border-radius:8px;font-size:13px;line-height:1.5;margin-bottom:15px}.status{font-size:13px;color:var(--muted);margin:8px 0}.hidden{display:none!important}footer{background:var(--navy);color:white;text-align:center;padding:30px;line-height:1.8}footer p{color:#c2cedb}.modal{position:fixed;inset:0;background:#071426bb;display:none;place-items:center;z-index:20;padding:18px}.modal.open{display:grid}.modalbox{background:white;border-radius:14px;padding:24px;width:min(430px,100%);display:grid;gap:12px}.modalbox h2{margin:0}.topline{display:flex;justify-content:space-between;align-items:center;gap:10px}.muted{color:var(--muted);font-size:13px}
+@media(max-width:700px){header{padding:14px 5%}.hero{padding:50px 5%}section{padding:30px 5%}.toolbar,.admin-layout,.formgrid{grid-template-columns:1fr}.formgrid .wide{grid-column:auto}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.product{padding:10px}.photo{height:120px}.product h3{font-size:14px}.product p{font-size:12px}.price{font-size:16px}.manage-row,.cart-row{align-items:flex-start;flex-direction:column}}
+</style></head><body>
+<header><div class="logo">NEXORA <span>STORE</span></div><nav><a href="#home">Accueil</a><a href="#products">Produits</a><a href="#cart">Panier (<b id="cartCount">0</b>)</a><button class="dark" id="adminOpen">Administration</button></nav></header>
+<div class="hero" id="home"><h1 id="heroTitle">Tous vos essentiels, au même endroit.</h1><p id="heroText">Découvrez notre sélection de produits et commandez facilement chez NEXORA STORE.</p><a class="btn" href="#products">Voir les produits</a></div>
+<section id="products"><h2 class="heading">Notre catalogue</h2><div class="toolbar"><input id="search" placeholder="Rechercher un produit..."><select id="category"><option value="">Toutes les catégories</option></select></div><div class="grid" id="productsGrid"></div></section>
+<section id="cart"><h2 class="heading">Votre panier</h2><div class="panel"><div id="cartItems" class="empty">Votre panier est vide.</div><div class="total" id="cartTotal">Total : $0.00</div><button id="orderBtn">Commander sur WhatsApp</button></div></section>
+<section id="admin" class="admin"><h2 class="heading">Espace administrateur</h2><div class="notice" id="connectionNotice">Connectez votre projet Supabase dans config.js, puis connectez-vous avec un compte administrateur. Les visiteurs ne peuvent pas gérer le catalogue.</div>
+<div id="adminLoggedOut" class="panel"><h3>Connexion administrateur</h3><p class="muted">Utilisez le compte administrateur créé dans Supabase Auth.</p><div class="stack" style="max-width:420px;margin-top:15px"><input id="email" type="email" placeholder="Adresse e-mail"><input id="password" type="password" placeholder="Mot de passe"><button id="loginBtn">Se connecter</button><p id="loginMessage" class="status"></p></div></div>
+<div id="adminLoggedIn" class="hidden"><div class="topline panel" style="margin-bottom:15px"><div><b>Administrateur connecté</b><div id="adminEmail" class="muted"></div></div><button class="danger" id="logoutBtn">Déconnexion</button></div>
+<div class="admin-layout"><aside class="side"><button class="active" data-tab="tabProducts">📦 Produits</button><button data-tab="tabSettings">⚙️ Paramètres</button></aside>
+<div><div id="tabProducts" class="tab active"><div class="panel"><h3 id="productFormTitle">Ajouter un produit</h3><form id="productForm" class="formgrid"><input id="pName" placeholder="Nom du produit" required><select id="pCategory" required><option>Téléphones</option><option>Informatique</option><option>Audio</option><option>Accessoires</option><option>Maison</option><option>Mode</option><option>Gaming</option><option>Beauté</option><option>Sports</option><option>Autres</option></select><textarea class="wide" id="pDescription" rows="2" placeholder="Description" required></textarea><input id="pPrice" type="number" min=".01" step=".01" placeholder="Prix" required><input id="pStock" type="number" min="0" step="1" placeholder="Stock" value="10"><input class="wide" id="pImage" type="url" placeholder="URL de l'image (https://)"><div class="wide"><button id="saveProduct">Enregistrer</button> <button type="button" class="light" id="cancelEdit">Annuler</button></div></form></div><div class="panel" style="margin-top:15px"><h3>Catalogue administrable</h3><div id="manageProducts"></div></div></div>
+<div id="tabSettings" class="tab"><div class="panel"><h3>Paramètres de la boutique</h3><p class="muted">Ces paramètres sont enregistrés dans la base de données et visibles par les clients.</p><form id="settingsForm" class="formgrid" style="margin-top:15px"><label>Nom de la boutique<input id="sName" required></label><label>Devise<select id="sCurrency"><option value="USD">USD — Dollar américain</option><option value="HTG">HTG — Gourde haïtienne</option></select></label><label class="wide">Slogan / description<textarea id="sDescription" rows="2"></textarea></label><label>WhatsApp (indicatif pays + numéro)<input id="sWhatsapp" placeholder="509XXXXXXXX"></label><label>E-mail de contact<input id="sEmail" type="email" placeholder="contact@exemple.com"></label><label class="wide">Adresse / informations de livraison<textarea id="sDelivery" rows="2"></textarea></label><div class="wide"><button>Enregistrer les paramètres</button></div></form><p id="settingsMessage" class="status"></p></div></div></div></div></div></section>
+<footer><h2 id="footerName">NEXORA STORE</h2><p id="footerDescription">Votre destination shopping.</p><p id="footerContact">Contact : WhatsApp</p><p>© 2026 NEXORA STORE. Tous droits réservés.</p></footer>
+<div class="modal" id="loginModal"><div class="modalbox"><div class="topline"><h2>Connexion administrateur</h2><button class="light" id="closeModal">Fermer</button></div><p class="muted">Connectez-vous pour gérer les produits et paramètres.</p><input id="modalEmail" type="email" placeholder="Adresse e-mail"><input id="modalPassword" type="password" placeholder="Mot de passe"><button id="modalLogin">Se connecter</button><p id="modalMessage" class="status"></p></div></div>
+<script src="config.js"></script>
 <script>
-const starterProducts = [
- {id:1,name:"Smartphone Android",category:"Téléphones",description:"Smartphone moderne pour vos activités quotidiennes.",price:129,image:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=700",stock:12},
- {id:2,name:"iPhone reconditionné",category:"Téléphones",description:"Téléphone Apple reconditionné — vérifiez l'état avant commande.",price:249,image:"https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=700",stock:5},
- {id:3,name:"Ordinateur portable",category:"Informatique",description:"Ordinateur portable pour études et travail.",price:399,image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=700",stock:4},
- {id:4,name:"Tablette",category:"Informatique",description:"Tablette pratique pour lire, apprendre et regarder des vidéos.",price:159,image:"https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=700",stock:7},
- {id:5,name:"Écouteurs sans fil",category:"Audio",description:"Écouteurs Bluetooth compacts.",price:24,image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700",stock:20},
- {id:6,name:"Casque Bluetooth",category:"Audio",description:"Casque confortable pour musique et appels.",price:39,image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700",stock:10},
- {id:7,name:"Montre connectée",category:"Accessoires",description:"Suivez vos activités avec une montre connectée.",price:32,image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700",stock:14},
- {id:8,name:"Chargeur rapide",category:"Accessoires",description:"Chargeur mural rapide pour appareils compatibles.",price:14,image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=700",stock:30},
- {id:9,name:"Coque de téléphone",category:"Accessoires",description:"Coque de protection au style simple.",price:8,image:"https://images.unsplash.com/photo-1601593346740-925612772716?w=700",stock:35},
- {id:10,name:"Batterie externe",category:"Accessoires",description:"Power bank portable pour vos déplacements.",price:22,image:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=700",stock:15},
- {id:11,name:"Enceinte Bluetooth",category:"Audio",description:"Enceinte portable pour écouter votre musique.",price:35,image:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=700",stock:9},
- {id:12,name:"Lampe de bureau",category:"Maison",description:"Éclairage pratique pour votre espace de travail.",price:19,image:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=700",stock:8},
- {id:13,name:"Sac à dos",category:"Mode",description:"Sac polyvalent pour école, travail et sorties.",price:28,image:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700",stock:11},
- {id:14,name:"Lunettes de soleil",category:"Mode",description:"Lunettes au design classique.",price:16,image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=700",stock:13},
- {id:15,name:"Manette de jeu",category:"Gaming",description:"Manette pour vos sessions de jeu compatibles.",price:29,image:"https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=700",stock:6},
- {id:16,name:"Clavier sans fil",category:"Informatique",description:"Clavier compact pour ordinateur et tablette.",price:25,image:"https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=700",stock:12}
+const cfg=window.NEXORA_CONFIG||{};
+const supabaseReady=!!(window.supabase&&cfg.url&&cfg.anonKey&&!cfg.url.includes("VOTRE_")&&!cfg.anonKey.includes("VOTRE_"));
+const db=supabaseReady?window.supabase.createClient(cfg.url,cfg.anonKey):null;
+const sample=[
+{id:"demo1",name:"Smartphone Android",category:"Téléphones",description:"Smartphone moderne pour vos activités quotidiennes.",price:129,stock:12,image:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=700"},
+{id:"demo2",name:"Ordinateur portable",category:"Informatique",description:"Ordinateur pour les études et le travail.",price:399,stock:4,image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=700"},
+{id:"demo3",name:"Écouteurs sans fil",category:"Audio",description:"Écouteurs Bluetooth compacts.",price:24,stock:20,image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700"},
+{id:"demo4",name:"Montre connectée",category:"Accessoires",description:"Suivez vos activités avec une montre connectée.",price:32,stock:14,image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700"},
+{id:"demo5",name:"Chargeur rapide",category:"Accessoires",description:"Chargeur mural pour appareils compatibles.",price:14,stock:30,image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=700"},
+{id:"demo6",name:"Sac à dos",category:"Mode",description:"Sac polyvalent pour école, travail et sorties.",price:28,stock:11,image:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700"},
+{id:"demo7",name:"Lampe de bureau",category:"Maison",description:"Éclairage pratique pour votre espace de travail.",price:19,stock:8,image:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=700"},
+{id:"demo8",name:"Manette de jeu",category:"Gaming",description:"Manette pour vos sessions de jeu.",price:29,stock:6,image:"https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=700"}
 ];
-let products = loadProducts();
-let cart = [];
-let editingId = null;
-function loadProducts(){try{const saved=localStorage.getItem("nexora_products_v1");return saved?JSON.parse(saved):starterProducts.slice()}catch(e){return starterProducts.slice()}}
-function saveProducts(){localStorage.setItem("nexora_products_v1",JSON.stringify(products))}
-const money = n => new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(n)||0);
-function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function imageUrl(url){return /^https:\/\//i.test(url||"")?url:"https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=700"}
-function categories(){return [...new Set(products.map(p=>p.category))].sort()}
-function renderFilters(){
- const el=document.getElementById("categoryFilter"),current=el.value;
- el.innerHTML='<option value="">Toutes les catégories</option>'+categories().map(c=>'<option value="'+safe(c)+'">'+safe(c)+'</option>').join("");
- el.value=current;
+let products=sample.slice(),cart=[],settings={store_name:"NEXORA STORE",description:"Découvrez notre sélection de produits et commandez facilement chez NEXORA STORE.",currency:"USD",whatsapp:"50943449848",contact_email:"",delivery_info:""},editing=null;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money=n=>new Intl.NumberFormat("fr-FR",{style:"currency",currency:settings.currency||"USD"}).format(Number(n)||0);
+function render(){
+ const q=$("search").value.toLowerCase(),cat=$("category").value;
+ const cats=[...new Set(products.map(p=>p.category).filter(Boolean))].sort(),old=cat;
+ $("category").innerHTML='<option value="">Toutes les catégories</option>'+cats.map(c=>'<option>'+esc(c)+'</option>').join("");$("category").value=cats.includes(old)?old:"";
+ const list=products.filter(p=>(p.name+" "+p.description+" "+p.category).toLowerCase().includes(q)&&(!$("category").value||p.category===$("category").value));
+ $("productsGrid").innerHTML=list.length?list.map(p=>'<article class="product"><div class="photo"><img loading="lazy" src="'+esc(p.image||"")+'" alt="'+esc(p.name)+'"></div><div class="category">'+esc(p.category)+'</div><h3>'+esc(p.name)+'</h3><p>'+esc(p.description)+'</p><div class="price">'+money(p.price)+'</div><button '+(Number(p.stock)<=0?'disabled':'')+' data-add="'+esc(p.id)+'">'+(Number(p.stock)<=0?"Indisponible":"Ajouter au panier")+'</button></article>').join(""):'<p class="empty">Aucun produit trouvé.</p>';
 }
-function displayProducts(){
- const term=document.getElementById("search").value.toLowerCase(),cat=document.getElementById("categoryFilter").value;
- const list=products.filter(p=>(p.name+" "+p.description+" "+p.category).toLowerCase().includes(term)&&(!cat||p.category===cat));
- const area=document.getElementById("productList");
- if(!list.length){area.innerHTML='<p class="empty">Aucun produit trouvé.</p>';return}
- area.innerHTML=list.map(p=>'<article class="product"><div class="product-image"><img src="'+safe(imageUrl(p.image))+'" alt="'+safe(p.name)+'" loading="lazy"></div><div class="category">'+safe(p.category)+'</div><h3>'+safe(p.name)+'</h3><p>'+safe(p.description)+'</p><div class="price">'+money(p.price)+'</div><button '+(Number(p.stock)<=0?'disabled':'')+' onclick="addToCart('+p.id+')">'+(Number(p.stock)<=0?'Rupture de stock':'Ajouter au panier')+'</button></article>').join("");
-}
-function addToCart(id){const p=products.find(x=>x.id===id);if(!p||p.stock<=0)return;cart.push({...p});updateCart()}
-function updateCart(){
- document.getElementById("count").textContent=cart.length;
- const area=document.getElementById("cartItems");
- if(!cart.length){area.className="empty";area.textContent="Votre panier est vide."}
- else{area.className="";area.innerHTML=cart.map((p,i)=>'<div class="cart-item"><span>'+safe(p.name)+' — '+money(p.price)+'</span><button class="remove" onclick="removeItem('+i+')">Retirer</button></div>').join("")}
- document.getElementById("total").textContent="Total : "+money(cart.reduce((s,p)=>s+Number(p.price),0));
-}
-function removeItem(i){cart.splice(i,1);updateCart()}
-function checkout(){
- if(!cart.length){alert("Votre panier est vide !");return}
- const total=cart.reduce((s,p)=>s+Number(p.price),0);
- const msg="Bonjour NEXORA STORE ! Je souhaite commander :\n"+cart.map(p=>"- "+p.name+" : "+money(p.price)).join("\n")+"\nTotal : "+money(total)+"\nMerci de confirmer la disponibilité, le prix et la livraison.";
- window.open("https://wa.me/50943449848?text="+encodeURIComponent(msg),"_blank");
-}
-function toggleAdmin(){const a=document.getElementById("admin");a.style.display=a.style.display==="block"?"none":"block";if(a.style.display==="block"){renderAdmin();a.scrollIntoView({behavior:"smooth"})}}
-function renderAdmin(){
- document.getElementById("adminProducts").innerHTML=products.map(p=>'<div class="admin-row"><div><b>'+safe(p.name)+'</b><br><small>'+safe(p.category)+' · '+money(p.price)+' · Stock : '+Number(p.stock||0)+'</small></div><div class="admin-actions"><button class="edit" onclick="editProduct('+p.id+')">Modifier</button><button class="delete" onclick="deleteProduct('+p.id+')">Supprimer</button></div></div>').join("")||'<p>Aucun produit.</p>';
-}
-function resetForm(){editingId=null;document.getElementById("productForm").reset();document.getElementById("pStock").value=10;document.getElementById("formTitle").textContent="Ajouter un produit";document.getElementById("saveProduct").textContent="Enregistrer le produit"}
-function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;editingId=id;document.getElementById("pName").value=p.name;document.getElementById("pDescription").value=p.description;document.getElementById("pCategory").value=p.category;document.getElementById("pPrice").value=p.price;document.getElementById("pImage").value=p.image||"";document.getElementById("pStock").value=p.stock||0;document.getElementById("formTitle").textContent="Modifier le produit";document.getElementById("saveProduct").textContent="Enregistrer les modifications";document.getElementById("productForm").scrollIntoView({behavior:"smooth"})}
-function deleteProduct(id){if(!confirm("Supprimer ce produit ?"))return;products=products.filter(p=>p.id!==id);saveProducts();renderAdmin();renderFilters();displayProducts()}
-document.getElementById("productForm").addEventListener("submit",e=>{
- e.preventDefault();
- const item={id:editingId??Date.now(),name:document.getElementById("pName").value.trim(),description:document.getElementById("pDescription").value.trim(),category:document.getElementById("pCategory").value,price:Number(document.getElementById("pPrice").value),image:document.getElementById("pImage").value.trim(),stock:Number(document.getElementById("pStock").value)||0};
- if(!item.name||!Number.isFinite(item.price)||item.price<=0){alert("Vérifiez le nom et le prix.");return}
- if(editingId!==null)products=products.map(p=>p.id===editingId?item:p);else products.unshift(item);
- saveProducts();resetForm();renderAdmin();renderFilters();displayProducts();alert("Produit enregistré dans ce navigateur.");
-});
-document.getElementById("search").addEventListener("input",displayProducts);
-document.getElementById("categoryFilter").addEventListener("change",displayProducts);
-renderFilters();displayProducts();updateCart();
-</script>
-</body>
-</html>
+function renderCart(){$("cartCount").textContent=cart.length;$("cartItems").innerHTML=cart.length?cart.map((p,i)=>'<div class="cart-row"><span>'+esc(p.name)+' — '+money(p.price)+'</span><button class="danger" data-remove="'+i+'">Retirer</button></div>').join(""):'<div class="empty">Votre panier est vide.</div>';$("cartTotal").textContent="Total : "+money(cart.reduce((a,p)=>a+Number(p.price),0))}
+async function loadProducts(){if(!db){render();return}const {data,error}=await db.from("products").select("*").eq("active",true).order("created_at",{ascending:false});if(error){console.error(error);render();return}products=data||[];render()}
+async function loadSettings(){if(db){const {data}=await db.from("store_settings").select("key,value");if(data)data.forEach(x=>settings[x.key]=x.value)}applySettings()}
+function applySettings(){$("heroTitle").textContent=settings.store_name||"NEXORA STORE";$("heroText").textContent=settings.description||"";$("footerName").textContent=settings.store_name||"NEXORA STORE";$("footerDescription").textContent=settings.description||"";$("footerContact").textContent=(settings.contact_email?"E-mail : "+settings.contact_email+" · ":"")+"WhatsApp : "+(settings.whatsapp||"")}
+async function refreshAdmin(){if(!db)return;const {data}=await db.from("products").select("*").order("created_at",{ascending:false});if(data){products=data;render();$("manageProducts").innerHTML=data.map(p=>'<div class="manage-row"><span><b>'+esc(p.name)+'</b><br><small>'+esc(p.category)+' · '+money(p.price)+' · Stock : '+p.stock+'</small></span><span><button class="light" data-edit="'+p.id+'">Modifier</button> <button class="danger" data-delete="'+p.id+'">Supprimer</button></span></div>').join("")||"<p>Aucun produit.</p>"}}
+async function sessionChanged(){if(!db)return;const {data}=await db.auth.getSession();const user=data.session?.user;$("adminLoggedOut").classList.toggle("hidden",!!user);$("adminLoggedIn").classList.toggle("hidden",!user);if(user){$("adminEmail").textContent=user.email||"";await refreshAdmin();await loadSettings();$("sName").value=settings.store_name||"";$("sDescription").value=settings.description||"";$("sCurrency").value=settings.currency||"USD";$("sWhatsapp").value=settings.whatsapp||"";$("sEmail").value=settings.contact_email||"";$("sDelivery").value=settings.delivery_info||""}}
+async function login(email,password,msg){if(!db){msg.textContent="Supabase n'est pas configuré. Consultez config.js et README.md.";return}msg.textContent="Connexion...";const {error}=await db.auth.signInWithPassword({email,password});msg.textContent=error?error.message:"Connexion réussie.";if(!error){$("loginModal").classList.remove("open");await sessionChanged()}}
+$("adminOpen").onclick=()=>{ $("admin").style.display="block";$("admin").scrollIntoView({behavior:"smooth"});if(!db)$("connectionNotice").textContent="Configuration Supabase manquante : suivez README.md pour connecter votre base de données."};
+$("loginBtn").onclick=()=>login($("email").value,$("password").value,$("loginMessage"));
+$("modalLogin").onclick=()=>login($("modalEmail").value,$("modalPassword").value,$("modalMessage"));
+$("closeModal").onclick=()=>$("loginModal").classList.remove("open");
+$("logoutBtn").onclick=async()=>{await db.auth.signOut();await sessionChanged()};
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.classList.toggle("active",x===b));document.querySelectorAll(".tab").forEach(x=>x.classList.toggle("active",x.id===b.dataset.tab))});
+$("productsGrid").addEventListener("click",e=>{const b=e.target.closest("[data-add]");if(b){const p=products.find(x=>String(x.id)===b.dataset.add);if(p){cart.push(p);renderCart()}}});
+$("cartItems").addEventListener("click",e=>{const b=e.target.closest("[data-remove]");if(b){cart.splice(Number(b.dataset.remove),1);renderCart()}});
+$("search").oninput=render;$("category").onchange=render;
+$("orderBtn").onclick=()=>{if(!cart.length)return alert("Votre panier est vide.");if(!settings.whatsapp)return alert("Le numéro WhatsApp de la boutique n'est pas configuré.");const msg="Bonjour "+settings.store_name+", je souhaite commander :\n"+cart.map(p=>"- "+p.name+" : "+money(p.price)).join("\n")+"\nTotal : "+money(cart.reduce((a,p)=>a+Number(p.price),0));window.open("https://wa.me/"+settings.whatsapp.replace(/\D/g,"")+"?text="+encodeURIComponent(msg),"_blank")};
+$("productForm").onsubmit=async e=>{e.preventDefault();if(!db)return alert("Base de données non configurée.");const payload={name:$("pName").value.trim(),category:$("pCategory").value,description:$("pDescription").value.trim(),price:Number($("pPrice").value),stock:Number($("pStock").value),image:$("pImage").value.trim(),active:true};const result=editing?await db.from("products").update(payload).eq("id",editing):await db.from("products").insert(payload);if(result.error)return alert(result.error.message);e.target.reset();editing=null;$("productFormTitle").textContent="Ajouter un produit";$("saveProduct").textContent="Enregistrer";await refreshAdmin()};
+$("cancelEdit").onclick=()=>{editing=null;$("productForm").reset();$("productFormTitle").textContent="Ajouter un produit"};
+$("manageProducts").onclick=async e=>{const edit=e.target.closest("[data-edit]"),del=e.target.closest("[data-delete]");if(edit){const p=products.find(x=>String(x.id)===edit.dataset.edit);if(!p)return;editing=p.id;$("pName").value=p.name;$("pCategory").value=p.category;$("pDescription").value=p.description;$("pPrice").value=p.price;$("pStock").value=p.stock;$("pImage").value=p.image||"";$("productFormTitle").textContent="Modifier le produit";$("saveProduct").textContent="Enregistrer les modifications";$("productForm").scrollIntoView({behavior:"smooth"})}if(del&&confirm("Supprimer ce produit ?")){const {error}=await db.from("products").delete().eq("id",del.dataset.delete);if(error)alert(error.message);else await refreshAdmin()}};
+$("settingsForm").onsubmit=async e=>{e.preventDefault();if(!db)return;const values={store_name:$("sName").value.trim(),description:$("sDescription").value.trim(),currency:$("sCurrency").value,whatsapp:$("sWhatsapp").value.replace(/\D/g,""),contact_email:$("sEmail").value.trim(),delivery_info:$("sDelivery").value.trim()};for(const [key,value] of Object.entries(values)){const {error}=await db.from("store_settings").upsert({key,value},{onConflict:"key"});if(error){$("settingsMessage").textContent=error.message;return}}settings={...settings,...values};applySettings();$("settingsMessage").textContent="Paramètres enregistrés avec succès."};
+(async()=>{if(!supabaseReady){$("connectionNotice").textContent="Le catalogue de démonstration est visible. Pour activer la connexion administrateur, les produits partagés et les paramètres, configurez Supabase comme indiqué dans README.md.";$("adminLoggedOut").classList.remove("hidden")}else{await loadSettings();await loadProducts();await sessionChanged();db.auth.onAuthStateChange(()=>setTimeout(sessionChanged,0))}render();renderCart()})();
+</script></body></html>
