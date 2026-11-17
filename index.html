@@ -3,228 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NEXORA STORE | Technology Shop</title>
-<meta name="description" content="Découvrez les téléphones et accessoires technologiques chez NEXORA STORE.">
+<title>NEXORA STORE | Boutique en ligne</title>
+<meta name="description" content="Découvrez les produits NEXORA STORE : technologie, maison, mode et accessoires.">
 <style>
+:root{--navy:#101b32;--teal:#40d9c1;--muted:#667085;--bg:#f4f7fb}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
-header{background:#101b32;color:white;padding:20px 7%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px}
-.logo{font-size:25px;font-weight:900;letter-spacing:2px}
-.logo span{color:#40d9c1}
-nav a{color:white;text-decoration:none;margin-left:16px}
-.hero{padding:75px 7%;background:linear-gradient(120deg,#101b32,#164c67);color:white}
-.hero h1{font-size:clamp(32px,5vw,55px);max-width:650px;margin-bottom:18px}
-.hero p{color:#d5e5ef;line-height:1.8;margin-bottom:25px;max-width:550px}
-.btn{display:inline-block;background:#40d9c1;color:#102139;padding:13px 22px;border:0;border-radius:8px;font-weight:bold;text-decoration:none;cursor:pointer}
-section{padding:45px 7%}
-.section-title{font-size:28px;margin-bottom:22px}
-.search{width:100%;padding:15px;border:1px solid #dce2ea;border-radius:9px;margin-bottom:25px;font-size:16px}
-.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:20px}
-.product{background:white;border-radius:13px;padding:17px;box-shadow:0 5px 20px #14213b0c}
-.product-image{height:180px;background:#eaf5f5;border-radius:10px;overflow:hidden;margin-bottom:15px}
+body{font-family:Arial,sans-serif;background:var(--bg);color:#172033}
+header{background:var(--navy);color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+.logo{font-size:24px;font-weight:900;letter-spacing:1.5px}.logo span{color:var(--teal)}
+nav{display:flex;gap:16px;flex-wrap:wrap;align-items:center}nav a{color:white;text-decoration:none;font-size:14px}
+button,.btn{background:var(--teal);color:#102139;padding:12px 17px;border:0;border-radius:8px;font-weight:bold;text-decoration:none;cursor:pointer}
+button:hover,.btn:hover{filter:brightness(.95)}
+.admin-link{background:#243550;color:white;border:1px solid #53627b}
+.hero{padding:70px 7%;background:linear-gradient(120deg,#101b32,#164c67);color:white}
+.hero h1{font-size:clamp(32px,5vw,54px);max-width:700px;margin-bottom:16px}
+.hero p{color:#d5e5ef;line-height:1.8;margin-bottom:24px;max-width:620px}
+section{padding:42px 7%}.section-title{font-size:27px;margin-bottom:20px}
+.toolbar{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:22px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #d8e0ea;border-radius:8px;font:inherit;background:white}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:18px}
+.product{background:white;border-radius:13px;padding:14px;box-shadow:0 5px 20px #14213b0c;display:flex;flex-direction:column}
+.product-image{height:165px;background:#edf4f5;border-radius:10px;overflow:hidden;margin-bottom:13px}
 .product-image img{width:100%;height:100%;object-fit:contain}
-.product h3{margin-bottom:10px}
-.product p{color:#697487;font-size:14px;line-height:1.5;margin-bottom:13px}
-.price{font-size:19px;font-weight:bold;color:#087d71;margin-bottom:15px}
-.product button{width:100%}
-.cart{background:white;border-radius:13px;padding:22px;box-shadow:0 5px 20px #14213b0c}
-.cart-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #eee}
-.remove{background:#ffe8e8;color:#a22;border:0;padding:8px 12px;border-radius:6px;cursor:pointer}
-.cart-total{font-size:21px;font-weight:bold;margin:20px 0}
+.product h3{font-size:17px;margin-bottom:8px}.product p{color:var(--muted);font-size:13px;line-height:1.5;margin-bottom:10px;flex:1}
+.category{font-size:11px;color:#087d71;font-weight:bold;text-transform:uppercase;margin-bottom:7px}
+.price{font-size:19px;font-weight:bold;color:#087d71;margin:5px 0 13px}
+.cart,.admin-panel{background:white;border-radius:13px;padding:22px;box-shadow:0 5px 20px #14213b0c}
+.cart-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eee}
+.remove{background:#ffe8e8;color:#a22;padding:8px 11px}
+.cart-total{font-size:21px;font-weight:bold;margin:18px 0}
 .empty{text-align:center;color:#777;padding:20px}
-footer{background:#101b32;color:white;text-align:center;padding:35px 15px;line-height:2}
-footer p{color:#b9c9d8}
-@media(max-width:600px){
- header{padding:18px 5%}
- nav a{margin-left:8px;font-size:13px}
- section{padding:35px 5%}
- .hero{padding:55px 5%}
- .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
- .product{padding:10px}
- .product-image{height:125px}
- .product h3{font-size:15px}
-}
+#admin{display:none;background:#eaf0f6}
+.admin-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:20px}
+.admin-form{display:grid;gap:10px}.admin-products{display:grid;gap:10px}
+.admin-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;border:1px solid #e4e9ef;border-radius:9px}
+.admin-actions{display:flex;gap:7px;flex-wrap:wrap}.edit{background:#e8f0ff;color:#244b91}.delete{background:#ffe8e8;color:#a22}
+.notice{background:#fff6db;border:1px solid #f0d98e;padding:12px;border-radius:8px;color:#725510;font-size:13px;line-height:1.5;margin-bottom:16px}
+footer{background:var(--navy);color:white;text-align:center;padding:32px 15px;line-height:2}footer p{color:#b9c9d8}
+@media(max-width:700px){header{padding:15px 5%}.hero{padding:52px 5%}section{padding:32px 5%}.toolbar,.admin-grid{grid-template-columns:1fr}.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.product{padding:10px}.product-image{height:120px}.product h3{font-size:14px}.product p{font-size:12px}.price{font-size:16px}.admin-row{align-items:flex-start;flex-direction:column}}
 </style>
 </head>
 <body>
-
 <header>
  <div class="logo">NEXORA <span>STORE</span></div>
  <nav>
-  <a href="#home">Accueil</a>
-  <a href="#products">Produits</a>
-  <a href="#cart">Panier (<span id="count">0</span>)</a>
+  <a href="#home">Accueil</a><a href="#products">Produits</a><a href="#cart">Panier (<span id="count">0</span>)</a>
+  <button class="admin-link" onclick="toggleAdmin()">Administration</button>
  </nav>
 </header>
-
 <div class="hero" id="home">
- <h1>La technologie à portée de main.</h1>
- <p>Découvrez notre collection de smartphones et accessoires technologiques. La qualité et le style réunis chez NEXORA STORE.</p>
- <a class="btn" href="#products">Découvrir nos produits</a>
+ <h1>Tous vos essentiels, au même endroit.</h1>
+ <p>Découvrez notre sélection de technologie, accessoires, maison, mode et bien plus. Choisissez vos articles et commandez directement avec NEXORA STORE.</p>
+ <a class="btn" href="#products">Voir les produits</a>
 </div>
-
 <section id="products">
- <h2 class="section-title">Nos produits</h2>
- <input class="search" id="search" placeholder="Rechercher un produit...">
+ <h2 class="section-title">Notre catalogue</h2>
+ <div class="toolbar">
+  <input id="search" placeholder="Rechercher un produit...">
+  <select id="categoryFilter"><option value="">Toutes les catégories</option></select>
+ </div>
  <div class="products" id="productList"></div>
 </section>
-
 <section id="cart">
  <h2 class="section-title">Votre panier</h2>
- <div class="cart">
-  <div id="cartItems" class="empty">Votre panier est vide.</div>
-  <div class="cart-total" id="total">Total : $0.00 USD</div>
-  <button class="btn" onclick="checkout()">Commander sur WhatsApp</button>
+ <div class="cart"><div id="cartItems" class="empty">Votre panier est vide.</div><div class="cart-total" id="total">Total : $0.00 USD</div><button onclick="checkout()">Commander sur WhatsApp</button></div>
+</section>
+<section id="admin">
+ <h2 class="section-title">Administration — NEXORA STORE</h2>
+ <div class="notice"><b>Version de démonstration :</b> les produits ajoutés ou modifiés sont enregistrés dans le navigateur utilisé. Ils ne sont pas encore synchronisés avec les visiteurs du site. Ne mettez pas de données sensibles ici. Une authentification serveur et une base de données seront nécessaires pour une administration publique sécurisée.</div>
+ <div class="admin-grid">
+  <div class="admin-panel">
+   <h3 id="formTitle" style="margin-bottom:14px">Ajouter un produit</h3>
+   <form class="admin-form" id="productForm">
+    <input id="pName" placeholder="Nom du produit" required>
+    <textarea id="pDescription" placeholder="Description" rows="3" required></textarea>
+    <select id="pCategory" required>
+     <option value="Téléphones">Téléphones</option><option value="Informatique">Informatique</option><option value="Audio">Audio</option><option value="Accessoires">Accessoires</option><option value="Maison">Maison</option><option value="Mode">Mode</option><option value="Gaming">Gaming</option>
+    </select>
+    <input id="pPrice" type="number" min="0.01" step="0.01" placeholder="Prix en USD" required>
+    <input id="pImage" type="url" placeholder="Lien de l'image (URL https://)">
+    <input id="pStock" type="number" min="0" step="1" placeholder="Quantité en stock" value="10">
+    <button type="submit" id="saveProduct">Enregistrer le produit</button>
+    <button type="button" class="remove" onclick="resetForm()">Annuler</button>
+   </form>
+  </div>
+  <div class="admin-panel"><h3 style="margin-bottom:14px">Gérer les produits</h3><div id="adminProducts" class="admin-products"></div></div>
  </div>
 </section>
-
-<footer>
- <h2>NEXORA STORE</h2>
- <p>Votre destination technologique.</p>
- <p>Contact : WhatsApp</p>
- <p>© 2026 NEXORA STORE. Tous droits réservés.</p>
-</footer>
-
+<footer><h2>NEXORA STORE</h2><p>Votre destination shopping.</p><p>Contact et commandes : WhatsApp</p><p>© 2026 NEXORA STORE. Tous droits réservés.</p></footer>
 <script>
-const products = [
- {
-  name:"Smartphone",
-  image:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=700",
-  description:"Smartphone moderne et élégant.",
-  price:99
- },
- {
-  name:"Écouteurs sans fil",
-  image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700",
-  description:"Écoutez votre musique partout.",
-  price:18
- },
- {
-  name:"Montre connectée",
-  image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700",
-  description:"Montre connectée au design moderne.",
-  price:25
- },
- {
-  name:"Chargeur rapide",
-  image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=700",
-  description:"Rechargez vos appareils facilement.",
-  price:12
- },
- {
-  name:"Coque de téléphone",
-  image:"https://images.unsplash.com/photo-1601593346740-925612772716?w=700",
-  description:"Protégez votre téléphone avec style.",
-  price:8
- },
- {
-  name:"Power bank",
-  image:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=700",
-  description:"Batterie externe portable.",
-  price:20
- }
+const starterProducts = [
+ {id:1,name:"Smartphone Android",category:"Téléphones",description:"Smartphone moderne pour vos activités quotidiennes.",price:129,image:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=700",stock:12},
+ {id:2,name:"iPhone reconditionné",category:"Téléphones",description:"Téléphone Apple reconditionné — vérifiez l'état avant commande.",price:249,image:"https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?w=700",stock:5},
+ {id:3,name:"Ordinateur portable",category:"Informatique",description:"Ordinateur portable pour études et travail.",price:399,image:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=700",stock:4},
+ {id:4,name:"Tablette",category:"Informatique",description:"Tablette pratique pour lire, apprendre et regarder des vidéos.",price:159,image:"https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=700",stock:7},
+ {id:5,name:"Écouteurs sans fil",category:"Audio",description:"Écouteurs Bluetooth compacts.",price:24,image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700",stock:20},
+ {id:6,name:"Casque Bluetooth",category:"Audio",description:"Casque confortable pour musique et appels.",price:39,image:"https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=700",stock:10},
+ {id:7,name:"Montre connectée",category:"Accessoires",description:"Suivez vos activités avec une montre connectée.",price:32,image:"https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=700",stock:14},
+ {id:8,name:"Chargeur rapide",category:"Accessoires",description:"Chargeur mural rapide pour appareils compatibles.",price:14,image:"https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=700",stock:30},
+ {id:9,name:"Coque de téléphone",category:"Accessoires",description:"Coque de protection au style simple.",price:8,image:"https://images.unsplash.com/photo-1601593346740-925612772716?w=700",stock:35},
+ {id:10,name:"Batterie externe",category:"Accessoires",description:"Power bank portable pour vos déplacements.",price:22,image:"https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=700",stock:15},
+ {id:11,name:"Enceinte Bluetooth",category:"Audio",description:"Enceinte portable pour écouter votre musique.",price:35,image:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=700",stock:9},
+ {id:12,name:"Lampe de bureau",category:"Maison",description:"Éclairage pratique pour votre espace de travail.",price:19,image:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=700",stock:8},
+ {id:13,name:"Sac à dos",category:"Mode",description:"Sac polyvalent pour école, travail et sorties.",price:28,image:"https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=700",stock:11},
+ {id:14,name:"Lunettes de soleil",category:"Mode",description:"Lunettes au design classique.",price:16,image:"https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=700",stock:13},
+ {id:15,name:"Manette de jeu",category:"Gaming",description:"Manette pour vos sessions de jeu compatibles.",price:29,image:"https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?w=700",stock:6},
+ {id:16,name:"Clavier sans fil",category:"Informatique",description:"Clavier compact pour ordinateur et tablette.",price:25,image:"https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=700",stock:12}
 ];
-
-let cart=[];
-
-const money = amount =>
- new Intl.NumberFormat("en-US",{
-  style:"currency",
-  currency:"USD"
- }).format(amount);
-
-function displayProducts(list){
- const container=document.getElementById("productList");
- container.innerHTML="";
-
- if(list.length===0){
-  container.innerHTML="<p>Aucun produit trouvé.</p>";
-  return;
- }
-
- list.forEach(p=>{
-  const index=products.indexOf(p);
-  container.innerHTML+=`
-   <div class="product">
-    <div class="product-image">
-     <img src="${p.image}" alt="${p.name}" loading="lazy">
-    </div>
-    <h3>${p.name}</h3>
-    <p>${p.description}</p>
-    <div class="price">${money(p.price)}</div>
-    <button class="btn" onclick="addToCart(${index})">
-     Ajouter au panier
-    </button>
-   </div>`;
- });
+let products = loadProducts();
+let cart = [];
+let editingId = null;
+function loadProducts(){try{const saved=localStorage.getItem("nexora_products_v1");return saved?JSON.parse(saved):starterProducts.slice()}catch(e){return starterProducts.slice()}}
+function saveProducts(){localStorage.setItem("nexora_products_v1",JSON.stringify(products))}
+const money = n => new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(Number(n)||0);
+function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function imageUrl(url){return /^https:\/\//i.test(url||"")?url:"https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=700"}
+function categories(){return [...new Set(products.map(p=>p.category))].sort()}
+function renderFilters(){
+ const el=document.getElementById("categoryFilter"),current=el.value;
+ el.innerHTML='<option value="">Toutes les catégories</option>'+categories().map(c=>'<option value="'+safe(c)+'">'+safe(c)+'</option>').join("");
+ el.value=current;
 }
-
-function addToCart(index){
- cart.push(products[index]);
- updateCart();
+function displayProducts(){
+ const term=document.getElementById("search").value.toLowerCase(),cat=document.getElementById("categoryFilter").value;
+ const list=products.filter(p=>(p.name+" "+p.description+" "+p.category).toLowerCase().includes(term)&&(!cat||p.category===cat));
+ const area=document.getElementById("productList");
+ if(!list.length){area.innerHTML='<p class="empty">Aucun produit trouvé.</p>';return}
+ area.innerHTML=list.map(p=>'<article class="product"><div class="product-image"><img src="'+safe(imageUrl(p.image))+'" alt="'+safe(p.name)+'" loading="lazy"></div><div class="category">'+safe(p.category)+'</div><h3>'+safe(p.name)+'</h3><p>'+safe(p.description)+'</p><div class="price">'+money(p.price)+'</div><button '+(Number(p.stock)<=0?'disabled':'')+' onclick="addToCart('+p.id+')">'+(Number(p.stock)<=0?'Rupture de stock':'Ajouter au panier')+'</button></article>').join("");
 }
-
+function addToCart(id){const p=products.find(x=>x.id===id);if(!p||p.stock<=0)return;cart.push({...p});updateCart()}
 function updateCart(){
  document.getElementById("count").textContent=cart.length;
-
  const area=document.getElementById("cartItems");
-
- if(cart.length===0){
-  area.className="empty";
-  area.textContent="Votre panier est vide.";
- }else{
-  area.className="";
-  area.innerHTML="";
-
-  cart.forEach((p,i)=>{
-   area.innerHTML+=`
-    <div class="cart-item">
-     <span>${p.name} - ${money(p.price)}</span>
-     <button class="remove" onclick="removeItem(${i})">
-      Retirer
-     </button>
-    </div>`;
-  });
- }
-
- const total=cart.reduce((sum,p)=>sum+p.price,0);
- document.getElementById("total").textContent="Total : "+money(total);
+ if(!cart.length){area.className="empty";area.textContent="Votre panier est vide."}
+ else{area.className="";area.innerHTML=cart.map((p,i)=>'<div class="cart-item"><span>'+safe(p.name)+' — '+money(p.price)+'</span><button class="remove" onclick="removeItem('+i+')">Retirer</button></div>').join("")}
+ document.getElementById("total").textContent="Total : "+money(cart.reduce((s,p)=>s+Number(p.price),0));
 }
-
-function removeItem(index){
- cart.splice(index,1);
- updateCart();
-}
-
-document.getElementById("search").addEventListener("input",function(){
- const term=this.value.toLowerCase();
- displayProducts(products.filter(p=>
-  p.name.toLowerCase().includes(term)
- ));
-});
-
+function removeItem(i){cart.splice(i,1);updateCart()}
 function checkout(){
- if(cart.length===0){
-  alert("Votre panier est vide !");
-  return;
- }
-
- const message=
- "Bonjour NEXORA STORE ! Je souhaite commander :\n"+
- cart.map(p=>"- "+p.name+" : "+money(p.price)).join("\n")+
- "\nTotal : "+money(cart.reduce((s,p)=>s+p.price,0))+
- "\nMerci de confirmer la disponibilité et la livraison.";
-
- const phone="50943449848";
- window.open(
-  "https://wa.me/"+phone+"?text="+encodeURIComponent(message),
-  "_blank"
- );
+ if(!cart.length){alert("Votre panier est vide !");return}
+ const total=cart.reduce((s,p)=>s+Number(p.price),0);
+ const msg="Bonjour NEXORA STORE ! Je souhaite commander :\n"+cart.map(p=>"- "+p.name+" : "+money(p.price)).join("\n")+"\nTotal : "+money(total)+"\nMerci de confirmer la disponibilité, le prix et la livraison.";
+ window.open("https://wa.me/50943449848?text="+encodeURIComponent(msg),"_blank");
 }
-
-displayProducts(products);
-updateCart();
+function toggleAdmin(){const a=document.getElementById("admin");a.style.display=a.style.display==="block"?"none":"block";if(a.style.display==="block"){renderAdmin();a.scrollIntoView({behavior:"smooth"})}}
+function renderAdmin(){
+ document.getElementById("adminProducts").innerHTML=products.map(p=>'<div class="admin-row"><div><b>'+safe(p.name)+'</b><br><small>'+safe(p.category)+' · '+money(p.price)+' · Stock : '+Number(p.stock||0)+'</small></div><div class="admin-actions"><button class="edit" onclick="editProduct('+p.id+')">Modifier</button><button class="delete" onclick="deleteProduct('+p.id+')">Supprimer</button></div></div>').join("")||'<p>Aucun produit.</p>';
+}
+function resetForm(){editingId=null;document.getElementById("productForm").reset();document.getElementById("pStock").value=10;document.getElementById("formTitle").textContent="Ajouter un produit";document.getElementById("saveProduct").textContent="Enregistrer le produit"}
+function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;editingId=id;document.getElementById("pName").value=p.name;document.getElementById("pDescription").value=p.description;document.getElementById("pCategory").value=p.category;document.getElementById("pPrice").value=p.price;document.getElementById("pImage").value=p.image||"";document.getElementById("pStock").value=p.stock||0;document.getElementById("formTitle").textContent="Modifier le produit";document.getElementById("saveProduct").textContent="Enregistrer les modifications";document.getElementById("productForm").scrollIntoView({behavior:"smooth"})}
+function deleteProduct(id){if(!confirm("Supprimer ce produit ?"))return;products=products.filter(p=>p.id!==id);saveProducts();renderAdmin();renderFilters();displayProducts()}
+document.getElementById("productForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const item={id:editingId??Date.now(),name:document.getElementById("pName").value.trim(),description:document.getElementById("pDescription").value.trim(),category:document.getElementById("pCategory").value,price:Number(document.getElementById("pPrice").value),image:document.getElementById("pImage").value.trim(),stock:Number(document.getElementById("pStock").value)||0};
+ if(!item.name||!Number.isFinite(item.price)||item.price<=0){alert("Vérifiez le nom et le prix.");return}
+ if(editingId!==null)products=products.map(p=>p.id===editingId?item:p);else products.unshift(item);
+ saveProducts();resetForm();renderAdmin();renderFilters();displayProducts();alert("Produit enregistré dans ce navigateur.");
+});
+document.getElementById("search").addEventListener("input",displayProducts);
+document.getElementById("categoryFilter").addEventListener("change",displayProducts);
+renderFilters();displayProducts();updateCart();
 </script>
-
 </body>
 </html>
