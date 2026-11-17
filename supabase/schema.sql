@@ -21,6 +21,11 @@ create table if not exists public.store_settings (
 alter table public.products enable row level security;
 alter table public.store_settings enable row level security;
 
+grant select on public.products to anon, authenticated;
+grant insert, update, delete on public.products to authenticated;
+grant select on public.store_settings to anon, authenticated;
+grant insert, update on public.store_settings to authenticated;
+
 -- Catalogue et paramètres : lecture publique seulement.
 create policy "Public can read active products"
 on public.products for select
